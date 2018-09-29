@@ -4,8 +4,16 @@
    DDR is used to set the pinmode whether as input/output,
    thus DDR register instead of using pinMode().
  *****************************************************************/
+
+unsigned long previousMillis = 0;        // will store last time LED was updated
+
+// constants won't change:
+const long interval = 1000;           // interval at which to blink (milliseconds)
+int timer = 300;
+ 
 void setup()
 {
+  Serial.begin(9600);
   DDRB = 0b00000111; //B0-B1(Set as output); DDR-Data Direvction Register is used to set the pin as input(0) or output(1)
   DDRD = 0b11111110; //D1-D7(Set as output)
 }
@@ -13,20 +21,24 @@ void setup()
 
 void loop()
 {
-  start();
-  for (int i = 0; i < 10; i++)
-  {
-    for ( int j = 0; j < 10; j++)
-    {
-      for ( int k = 0; k < 10; k++)
-      {
-        for (int del = 0; del < 10; del++)
-        {
-          disp(i, j, k);
-        }
-      }
-    }
+  //start();
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= interval) {
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+
+    timer -= 1;
+
   }
+  int t = timer;
+  int i = t % 10;
+  t /= 10;
+  int j = t % 10;
+  t /= 10;
+  int k = t % 10;
+                
+  disp(k, j, i);
 }
 
 void start()
@@ -35,7 +47,7 @@ void start()
   {
     if (i == 3)
     {
-      PORTB = 0b00000011; //Turn ON B1-pin and other pins of port B are OFF.
+      PORTB = 0b00000011; //Turn ON B2-pin and other pins of port B are OFF.
     }
     if (i == 2)
     {
