@@ -39,11 +39,11 @@ void start()
     }
     if (i == 2)
     {
-      PORTB = 0b00000110; //Turn ON B1-pin and other pins of port B are OFF.
+      PORTB = 0b00000101; //Turn ON B1-pin and other pins of port B are OFF.
     }
     if (i == 1)
     {
-      PORTB = 0b00000101;
+      PORTB = 0b00000110;
     }
     PORTD = 0b00000010;
     delay(100);
@@ -129,7 +129,7 @@ void nine()
 
 void digit1(int x)
 {
-  PORTB = 0b000000101;
+  PORTB = 0b000000110;
   switch (x) {
     case 1: one(); break;
     case 2: two(); break;
@@ -147,7 +147,7 @@ void digit1(int x)
 
 void digit2(int x)
 {
-  PORTB = 0b00000110;
+  PORTB = 0b00000101;
   switch (x) {
     case 1: one(); break;
     case 2: two(); break;
