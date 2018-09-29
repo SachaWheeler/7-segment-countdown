@@ -8,21 +8,19 @@ void setup()
 {
   DDRB = 0b00000111; //B0-B1(Set as output); DDR-Data Direvction Register is used to set the pin as input(0) or output(1)
   DDRD = 0b11111110; //D1-D7(Set as output)
-
-  start();
 }
 
 
 void loop()
 {
-  //start();
+  start();
   for (int i = 0; i < 10; i++)
   {
     for ( int j = 0; j < 10; j++)
     {
       for ( int k = 0; k < 10; k++)
       {
-        for (int del = 0; del < 3; del++)
+        for (int del = 0; del < 10; del++)
         {
           disp(i, j, k);
         }
@@ -41,11 +39,11 @@ void start()
     }
     if (i == 2)
     {
-      PORTB = 0b00000010; //Turn ON B1-pin and other pins of port B are OFF.
+      PORTB = 0b00000110; //Turn ON B1-pin and other pins of port B are OFF.
     }
     if (i == 1)
     {
-      PORTB = 0b00000001;
+      PORTB = 0b00000101;
     }
     PORTD = 0b00000010;
     delay(100);
@@ -131,7 +129,7 @@ void nine()
 
 void digit1(int x)
 {
-  PORTB = 0b00000001;
+  PORTB = 0b000000101;
   switch (x) {
     case 1: one(); break;
     case 2: two(); break;
@@ -149,7 +147,7 @@ void digit1(int x)
 
 void digit2(int x)
 {
-  PORTB = 0b000000010;
+  PORTB = 0b00000110;
   switch (x) {
     case 1: one(); break;
     case 2: two(); break;
