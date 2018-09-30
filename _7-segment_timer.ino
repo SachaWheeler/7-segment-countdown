@@ -6,22 +6,59 @@
  *****************************************************************/
 
 unsigned long previousMillis = 0;        // will store last time LED was updated
+unsigned int displayMillis = 10;
 
 // constants won't change:
 const long interval = 1000;           // interval at which to blink (milliseconds)
 int timer = 300;
+
+// encoder variables
+int pinA = 12;  // Connected to CLK on KY-040
+int pinB = 11;  // Connected to DT on KY-040
+int encoderPosCount = 0; 
+int pinALast;  
+int aVal;
+boolean bCW;
  
 void setup()
-{
-  Serial.begin(9600);
+{ 
   DDRB = 0b00000111; //B0-B1(Set as output); DDR-Data Direvction Register is used to set the pin as input(0) or output(1)
   DDRD = 0b11111110; //D1-D7(Set as output)
-}
 
+  pinMode (pinA,INPUT);
+  pinMode (pinB,INPUT);
+  // Read Pin A. Whatever state it's in will reflect the last position   
+  pinALast = digitalRead(pinA);   
+
+}
 
 void loop()
 {
   //start();
+  aVal = digitalRead(pinA);
+  if (aVal != pinALast){ // Means the knob is rotating
+     // if the knob is rotating, we need to determine direction
+     // We do that by reading pin B.
+     if (digitalRead(pinB) != aVal) {  // Means pin A Changed first - We're Rotating Clockwise
+       encoderPosCount ++;
+       bCW = true;
+     } else {// Otherwise B changed first and we're moving CCW
+       bCW = false;
+       encoderPosCount--;
+     }
+     //Serial.print ("Rotated: ");
+     if (bCW){
+       //Serial.println ("clockwise");
+       timer += 30;
+     }else{
+       //Serial.println("counterclockwise");
+       timer -= 30;
+     }
+     //Serial.print("Encoder Position: ");
+     //Serial.println(encoderPosCount);
+     
+  } 
+  pinALast = aVal;
   unsigned long currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
@@ -31,14 +68,7 @@ void loop()
     timer -= 1;
 
   }
-  int t = timer;
-  int i = t % 10;
-  t /= 10;
-  int j = t % 10;
-  t /= 10;
-  int k = t % 10;
-                
-  disp(k, j, i);
+  disp(timer);
 }
 
 void start()
@@ -89,55 +119,16 @@ void start()
   }
 }
 
-void zero()
-{
-  PORTD = 0b01111110;
-}
-
-void one()
-{
-  PORTD = 0b00001100;
-}
-
-void two()
-{
-  PORTD = 0b10110110;
-}
-
-void three()
-{
-  PORTD = 0b10011110;
-}
-
-void four()
-{
-  PORTD = 0b11001100;
-}
-
-void five()
-{
-  PORTD = 0b11011010;
-}
-
-void six()
-{
-  PORTD = 0b11111010;
-}
-
-void seven()
-{
-  PORTD = 0b00001110;
-}
-
-void eight()
-{
-  PORTD = 0b11111110;
-}
-
-void nine()
-{
-  PORTD = 0b11001110;
-}
+void zero(){  PORTD = 0b01111110;}
+void one(){   PORTD = 0b00001100;}
+void two(){   PORTD = 0b10110110;}
+void three(){ PORTD = 0b10011110;}
+void four(){  PORTD = 0b11001100;}
+void five(){  PORTD = 0b11011010;}
+void six(){   PORTD = 0b11111010;}
+void seven(){ PORTD = 0b00001110;}
+void eight(){ PORTD = 0b11111110;}
+void nine(){  PORTD = 0b11001110;}
 
 void digit1(int x)
 {
@@ -152,8 +143,8 @@ void digit1(int x)
     case 7: seven(); break;
     case 8: eight(); break;
     case 9: nine(); break;
+    case 0:
     case 10: zero(); break;
-    case 0: zero(); break;
   }
 }
 
@@ -170,7 +161,7 @@ void digit2(int x)
     case 7: seven(); break;
     case 8: eight(); break;
     case 9: nine(); break;
-    case 0: zero(); break;
+    case 0:
     case 10: zero(); break;
   }
 }
@@ -188,17 +179,26 @@ void digit3(int x)
     case 7: seven(); break;
     case 8: eight(); break;
     case 9: nine(); break;
-    case 0: zero(); break;
+    case 0:
     case 10: zero(); break;
   }
 }
 
-void disp(int i, int j, int k)
+void disp(int t)
 {
-  digit1(i);
-  delay(10);
+  int i = t % 10;
+  t /= 10;
+  int j = t % 10;
+  t /= 10;
+  int k = t % 10;
+                
+  digit1(k);
+  delay(displayMillis);
+  
   digit2(j);
-  delay(10);
-  digit3(k);
-  delay(10);
+  delay(displayMillis);
+  
+  digit3(i);
+  delay(displayMillis);
+  
 }
