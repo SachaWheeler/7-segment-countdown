@@ -119,69 +119,40 @@ void start()
   }
 }
 
-void zero(){  PORTD = 0b01111110;}
-void one(){   PORTD = 0b00001100;}
-void two(){   PORTD = 0b10110110;}
-void three(){ PORTD = 0b10011110;}
-void four(){  PORTD = 0b11001100;}
-void five(){  PORTD = 0b11011010;}
-void six(){   PORTD = 0b11111010;}
-void seven(){ PORTD = 0b00001110;}
-void eight(){ PORTD = 0b11111110;}
-void nine(){  PORTD = 0b11001110;}
+void digit(int x)
+{
+  switch (x) {
+    case 1: PORTD = 0b00001100; break;
+    case 2: PORTD = 0b10110110; break;
+    case 3: PORTD = 0b10011110; break;
+    case 4: PORTD = 0b11001100; break;
+    case 5: PORTD = 0b11011010; break;
+    case 6: PORTD = 0b11111010; break;
+    case 7: PORTD = 0b00001110; break;
+    case 8: PORTD = 0b11111110; break;
+    case 9: PORTD = 0b11001110; break;
+    case 0:
+    case 10: PORTD = 0b01111110; break;
+  }
+}
+
 
 void digit1(int x)
 {
   PORTB = 0b000000110;
-  switch (x) {
-    case 1: one(); break;
-    case 2: two(); break;
-    case 3: three(); break;
-    case 4: four(); break;
-    case 5: five(); break;
-    case 6: six(); break;
-    case 7: seven(); break;
-    case 8: eight(); break;
-    case 9: nine(); break;
-    case 0:
-    case 10: zero(); break;
-  }
+  digit(x);
 }
 
 void digit2(int x)
 {
   PORTB = 0b00000101;
-  switch (x) {
-    case 1: one(); break;
-    case 2: two(); break;
-    case 3: three(); break;
-    case 4: four(); break;
-    case 5: five(); break;
-    case 6: six(); break;
-    case 7: seven(); break;
-    case 8: eight(); break;
-    case 9: nine(); break;
-    case 0:
-    case 10: zero(); break;
-  }
+  digit(x);
 }
 
 void digit3(int x)
 {
   PORTB = 0b000000011;
-  switch (x) {
-    case 1: one(); break;
-    case 2: two(); break;
-    case 3: three(); break;
-    case 4: four(); break;
-    case 5: five(); break;
-    case 6: six(); break;
-    case 7: seven(); break;
-    case 8: eight(); break;
-    case 9: nine(); break;
-    case 0:
-    case 10: zero(); break;
-  }
+  digit(x);
 }
 
 void disp(int t)
